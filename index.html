@@ -1,7 +1,65 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page - Forum</title>
+    <link rel="stylesheet" href="/css/site.css" />
+
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <div class="container">
+        <main role="main" class="pb-3">
+            
+<div id="contentions"></div>
+<button style="text-align: left; position: fixed; left: 0px; top: 0px; width: 200px; height: 20px; " onclick="Controller.viewAll()">all</button>
+<div id="topics"></div>
+<div class="menuStyle" style="margin: 0px;">
+    <table border="0" cellspacing="0" cellpadding="0" border-collapse="collapse" bgcolor="#ffffff" style="margin: 0px;">
+        <tr>
+            <td>
+                <textarea id="argumentTextArea" style="width:320px; height:64px;"></textarea>
+            </td>
+            <td>
+                <table border="0" cellspacing="0" cellpadding="0" border-collapse="collapse">
+                    <tr>
+                        <td><button class="UIBbutton" onclick="Controller.addContention()">ƒобавить (ctrl||shift)&enter </button></td>
+                        <td><button class="UIBbutton" onclick="Controller.changeContention()">»зменить</button></td>
+                        <td><button class="UIBbutton" onclick="Controller.createTopicFromContention()" style="background-color: #e6e6e6;">сделать топиком</button></td>
+                        <td><button class="UIBbutton" onclick="">перенести(shift+click)</button></td>
+                        <td><button style="background-color:#7bfc03;" onclick="Controller.changeContentionColor('#7bfc03')"> Text</button> </td>
+                        <td><button style="background-color:#f8fc03;" onclick="Controller.changeContentionColor('#f8fc03')"> Text</button> </td>
+                        <td><button style="background-color:#03fcbe;" onclick="Controller.changeContentionColor('#03fcbe')"> Text</button></td>
+                        <td><a href="/Home/Manual">Manual</a></td>
+                        <td><button class="UIBbutton" onclick="Controller.updatePassword()">reload</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="UIBbutton" onclick="Controller.addLink()">добавить ссылку</button></td>
+                        <td><button class="UIBbutton" onclick="Controller.deleteContention()">удалить(del)</button></td>
+                        <td><button class="UIBbutton" onclick="Controller.addSelectedToArchive()">(archive)</button></td>
+                        <td><button class="UIBbutton" onclick="Controller.collapceSelectedContention()" style="background-color: #9b9bff;">свернуть(right+click)</button></td>
+                        <td><button style="background-color:#FFF;" onclick="Controller.changeContentionColor('#FFF')"> Text</button></td>
+                        <td><button style="background-color:#fc03f0;" onclick="Controller.changeContentionColor('#fc03f0')"> Text</button></td>
+                        <td><button style="background-color:#fc3503;" onclick="Controller.changeContentionColor('#fc3503')"> Text</button></td>
+                        <td><a href="/Home/Settings">Settings</a></td>
+                        <td><textarea id="passwordTextArea" style="width:320px; height:24px;"></textarea></td>
+</tr>
+                </table>
+            </td>
+            <td>
+                
+            </td>
+</table>
+</div>
+        </main>
+    </div>
+    <script src="/js/Controller.js"></script>
+    <script src="/js/Input.js"></script>
+    <script src="/js/UIDrawer.js"></script>
+    <script src="/js/Model.js"></script>
+    <script src="/js/Network.js"></script>
+    <script src="/js/Encription.js"></script>
+    
 </body>
 </html>

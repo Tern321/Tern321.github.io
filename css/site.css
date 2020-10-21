@@ -1,0 +1,38 @@
+﻿.UIBbutton {
+    width: 207px;
+    background-color: #FFF;
+    border-width: 1px;
+}
+
+.menuStyle {
+    position: fixed; /* Фиксированное положение */
+    left: 200px;
+    top: 0; /* Левый нижний угол */
+    width: 200px; /* Ширина слоя */
+    height: 66px;
+}
+
+.topicsStyle {
+    font-size: 120%;
+    font-family: monospace;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.verticalContainer {
+    height: 14px;
+    border: 1px solid black;
+}
+
+.verticalCenter {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    line-height: 80%;
+    padding-bottom: 3px;
+}
+/*font-family: monospace;*/
