@@ -26,8 +26,14 @@ class Model {
         }
         catch (e) {
             console.log(e);
+            console.log("decriptJson error");
+            Model.parseJson("[]");
         }
-        //console.log(Model.contentionsMap);
+        if (Model.contentionsMap.keys.length == 0) {
+            console.log("parse default Json");
+            Model.parseJson("[]");
+        }
+        console.log("decriptJson done");
     }
     static parseJson(jsonText) {
         try {
@@ -195,7 +201,7 @@ class Contention {
         }
         return this.parentContention().childs.indexOf(this.id);
     }
-    nextContention() {
+    nextOrDefault() {
         var parentContention = this.parentContention();
         var index = this.indexInParentContention() + 1;
         if (index < parentContention.childs.length) {
@@ -203,7 +209,7 @@ class Contention {
         }
         return;
     }
-    previosContention() {
+    previosOrDefault() {
         var parentContention = this.parentContention();
         var index = this.indexInParentContention() - 1;
         if (index >= 0) {

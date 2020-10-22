@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 class Controller {
     static createTopicFromContention() {
         var selectedcontention = Controller.selectedcontention();
@@ -142,14 +133,6 @@ class Controller {
         Controller.saveUpdatedData();
         UIDrawer.drawUI(false);
     }
-    static loadJson(url) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(url)
-                .then(function (body) { return body.text(); })
-                .then(function (data) { Model.decriptJson(data, Controller.getPassword()); })
-                .catch(function (body) { Model.parseJson(""); });
-        });
-    }
     static moveToTopic(topicId) {
         Controller.topicId = topicId;
         UIDrawer.drawUI(false);
@@ -158,26 +141,53 @@ class Controller {
         Controller.topicId = "root";
         UIDrawer.drawUI(true);
     }
-    static getPassword() {
-        var textArea = document.getElementById("passwordTextArea");
-        return textArea.value;
-    }
-    static updatePassword() {
-        localStorage.setItem("password", this.getPassword());
+    static getEncriptionKey() {
+        return this.getTextAreaValue("encriptionKeyTextArea").trim();
     }
     static saveUpdatedData() {
-        Controller.currentVersion++;
-        var list = [];
-        Model.rootContention().recursiveAddChilds(list);
-        var json = JSON.stringify(list);
-        //console.log(json);
-        var url = "https://localhost:44380/Home/saveUdatedData";
-        Network.saveJson(url, json, this.getPassword());
-        // sand request on server
+        const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
+        var login = this.getTextAreaValue("loginTextArea").trim();
+        var encriptionKey = this.getTextAreaValue("encriptionKeyTextArea").trim();
+        var hash = Math.abs(hashCode(login));
+        if (login.length > 0) {
+            Controller.currentVersion++;
+            var list = [];
+            Model.rootContention().recursiveAddChilds(list);
+            var json = JSON.stringify(list);
+            //console.log(json);
+            var url = "";
+            //var url = "https://localhost:44380/Home/saveUdatedData" 
+            Network.saveJson(url, json, hash.toString(), this.getEncriptionKey());
+            // sand request on server
+        }
     }
     static reload() {
-        var url = "https://localhost:44380/Home/json";
-        Controller.loadJson(url);
+        const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
+        var login = this.getTextAreaValue("loginTextArea").trim();
+        var encriptionKey = this.getTextAreaValue("encriptionKeyTextArea").trim();
+        if (login.length > 0) {
+            console.log(login);
+            console.log(encriptionKey);
+            var hash = Math.abs(hashCode(login));
+            console.log("login hash " + hash);
+            localStorage.setItem("login", login);
+            localStorage.setItem("encriptionKey", encriptionKey);
+            //var url = "https://localhost:44380/Home/json"
+            var url = "https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/" + hash + ".json";
+            Network.loadJson(url);
+        }
+        else {
+            console.log("load default data");
+            //console.log(login)
+            //console.log(encriptionKey)
+            //var hash = Math.abs(hashCode(login));
+            ////console.log("login hash " + hash)
+            //localStorage.setItem("login", login);
+            //localStorage.setItem("encriptionKey", encriptionKey);
+            //var url = "https://localhost:44380/Home/json"
+            var url = "https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/1544803905.json";
+            Network.loadJson(url);
+        }
     }
     static contentionIsVisible(contentionId) {
         return document.getElementById(contentionId) != undefined;
@@ -201,7 +211,7 @@ class Controller {
             }
         }
         if (keyCode == upKeyCode) {
-            var previosContention = this.selectedcontention().previosContention();
+            var previosContention = this.selectedcontention().previosOrDefault();
             if (previosContention) {
                 this.selectContentionById(previosContention.id);
             }
@@ -210,7 +220,7 @@ class Controller {
                 var contention = this.selectedcontention();
                 while (contention && !previosContention) {
                     contention = contention.parentContention();
-                    previosContention = contention.previosContention();
+                    previosContention = contention.previosOrDefault();
                     offset++;
                 }
                 contention = previosContention;
@@ -224,7 +234,7 @@ class Controller {
             }
         }
         if (keyCode == downKeyCode) {
-            var nextContention = this.selectedcontention().nextContention();
+            var nextContention = this.selectedcontention().nextOrDefault();
             if (nextContention) {
                 this.selectContentionById(nextContention.id);
             }
@@ -233,7 +243,7 @@ class Controller {
                 var contention = this.selectedcontention();
                 while (contention && !nextContention) {
                     contention = contention.parentContention();
-                    nextContention = contention.nextContention();
+                    nextContention = contention.nextOrDefault();
                     offset++;
                 }
                 contention = nextContention;
@@ -276,16 +286,39 @@ class Controller {
             UIDrawer.drawUI(false);
         }
     }
+    static getTextAreaValue(id) {
+        var textArea = document.getElementById(id);
+        return textArea.value;
+    }
+    static setTextAreaValue(key, value) {
+        var textArea = document.getElementById(key);
+        textArea.value = value;
+    }
 }
 Controller.topicId = "root";
 Controller.currentVersion = 11;
 Controller.changeSelectedContention = false;
 Controller.shouldSaveContentionOrder = true;
+//declare var TestLoad;
+//declare var TestSave;
+//declare var TestDownloadFile;
+//declare var TestUploadFile;
 window.onload = () => {
-    console.log("on load");
-    var textArea = document.getElementById("passwordTextArea");
-    textArea.value = localStorage.getItem("password");
+    console.log("on load " + localStorage.getItem("login"));
+    Controller.setTextAreaValue("loginTextArea", localStorage.getItem("login"));
+    Controller.setTextAreaValue("encriptionKeyTextArea", localStorage.getItem("encriptionKey"));
     enableInput();
+    TestInit();
     Controller.reload();
+    //TestUploadFile();
+    // https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/data.txt
+    //Backendless.initApp(APP_ID, API_KEY);
+    //Backendless.Data.of("TestTable").save({ foo: "bar" })
+    //    .then(function (obj: any) {
+    //        console.log("object saved. objectId " + obj.objectId)
+    //    })
+    //    .catch(function (error) {
+    //        console.log("got error - " + error)
+    //    })
 };
 //# sourceMappingURL=Controller.js.map

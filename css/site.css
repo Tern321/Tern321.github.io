@@ -1,15 +1,10 @@
-﻿.UIBbutton {
-    width: 207px;
-    background-color: #FFF;
-    border-width: 1px;
-}
+﻿
 
 .menuStyle {
     position: fixed; /* Фиксированное положение */
     left: 200px;
     top: 0; /* Левый нижний угол */
-    width: 200px; /* Ширина слоя */
-    height: 66px;
+
 }
 
 .topicsStyle {
@@ -35,4 +30,17 @@
     line-height: 80%;
     padding-bottom: 3px;
 }
+
+.uiButtons {
+    vertical-align: middle;
+    display: flex;
+}
+
+.UIBbutton {
+    width: 160px;
+    background-color: #FFF;
+    border-width: 1px;
+    margin: 0px;
+}
+
 /*font-family: monospace;*/
