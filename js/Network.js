@@ -14,13 +14,13 @@ class Network {
                 var data = new SerializedData();
                 data.encriptedData = encriptionData;
                 data.version = Controller.currentVersion;
-                console.log(data);
+                //console.log(data);
                 //console.log("json data " + JSON.stringify(data));
                 //data.json = json;
                 if (true) {
-                    console.log("loginHash " + loginHash);
-                    console.log(JSON.stringify(data));
-                    TestUploadFile(loginHash, JSON.stringify(data));
+                    //console.log("loginHash " + loginHash);
+                    //console.log(JSON.stringify(data));
+                    backendlessUploadFile(loginHash + ".json", JSON.stringify(data));
                 }
                 else {
                     fetch(url, {
@@ -49,7 +49,10 @@ class Network {
             const response = yield fetch(url)
                 .then(function (body) { return body.text(); })
                 .then(function (data) { Model.decriptJson(data, Controller.getEncriptionKey()); })
-                .catch(function (body) { Model.parseJson(""); });
+                .catch(function (body) {
+                console.log("loadJson error");
+                Model.parseJson("");
+            });
         });
     }
     static initBackndless() {

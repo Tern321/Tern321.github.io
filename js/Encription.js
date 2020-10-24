@@ -52,7 +52,7 @@ class CryptoWarper {
         return __awaiter(this, void 0, void 0, function* () {
             var data = new EncriptionData();
             if (password.length > 0) {
-                console.log("encripting data");
+                //console.log("encripting data");
                 let salt = window.crypto.getRandomValues(new Uint8Array(16));
                 data.saltJson = JSON.stringify(Array.from(salt));
                 let iv = window.crypto.getRandomValues(new Uint8Array(12));
@@ -68,7 +68,7 @@ class CryptoWarper {
                 data.encriptedString = CryptoWarper.arrayBufferToBase64(ciphertext);
             }
             else {
-                console.log("data not encripted");
+                //console.log("data not encripted");
                 data.encriptedString = json;
             }
             return data;
@@ -83,7 +83,7 @@ class CryptoWarper {
             var iv = new Uint8Array(JSON.parse(data.ivJsonString));
             var salt = new Uint8Array(JSON.parse(data.saltJson));
             var ciphertext = CryptoWarper.base64ToArrayBuffer(data.encriptedString);
-            console.log("ciphertext " + data.encriptedString);
+            //console.log("ciphertext " + data.encriptedString);
             let keyMaterial = yield CryptoWarper.getKeyMaterial(password);
             let key = yield CryptoWarper.getKey(keyMaterial, salt);
             try {
@@ -95,6 +95,8 @@ class CryptoWarper {
                 return dec.decode(decrypted);
             }
             catch (e) {
+                console.log("decript error ");
+                alert("Вероятно вы ввели неправильный ключ");
                 return "[]";
             }
         });

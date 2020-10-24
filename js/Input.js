@@ -1,33 +1,12 @@
 function enableInput() {
-    //document.addEventListener('keypress', function (event) {
-    //    console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
-    //    //if ((event.shiftKey) && (event.keyCode == 1071)) {
-    //    //    moveContention();
-    //    //}
-    //    if (event.shiftKey && ((event.keyCode == 0xA) || (event.keyCode == 0xD))) {
-    //        Controller.addContentionList();
-    //    }
-    //    if (event.ctrlKey && ((event.keyCode == 0xA) || (event.keyCode == 0xD))) {
-    //        if (Controller.changeSelectedContention) {
-    //            Controller.changeContention();
-    //        }
-    //        else {
-    //            Controller.addContention();
-    //        }
-    //    }
-    //});
     document.onkeyup = keyUp;
     document.onkeydown = checkKeycode;
     document.addEventListener('keydown', function (e) {
-        console.log(e);
+        //console.log(e);
         if (e.keyCode == 46) {
             Controller.deleteContention();
         }
     }, false);
-    //document.getElementById("test").addEventListener("mousedown", mouseDownEvent);
-    //document.getElementById("test").addEventListener("mouseup", mouseUpEvent);
-    //document.body.oncontextmenu = function (e) { return mouseClick(e); }
-    //document.body.onmousedown = function (e) { return mouseClick(e); }
     document.getElementById("contentions").addEventListener("auxclick", mouseClick, false);
     document.getElementById("contentions").addEventListener('click', mouseClick, false);
     document.getElementById("contentions").oncontextmenu = function (e) { return mouseClick(e); };
@@ -37,12 +16,12 @@ function enableInput() {
 function keyUp(event) {
     if (event.keyCode == 16) {
         Controller.saveContentionOrder();
-        console.log("shift up");
+        //console.log("shift up");
     }
     //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
 }
 function checkKeycode(event) {
-    console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
+    //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
     //if ((event.shiftKey) && (event.keyCode == 1071)) {
     //    moveContention();
     //}
@@ -62,12 +41,12 @@ function checkKeycode(event) {
     var rightKeyCode = 39;
     var downKeyCode = 40;
     if ([leftKeyCode, upKeyCode, rightKeyCode, downKeyCode].indexOf(event.keyCode) != -1 && event.ctrlKey) {
-        console.log("move contention selection");
+        //console.log("move contention selection");
         Controller.moveContentionSelection(event.keyCode);
         return false;
     }
     if ([upKeyCode, downKeyCode].indexOf(event.keyCode) != -1 && event.shiftKey) {
-        console.log("move contention");
+        //console.log("move contention");
         Controller.moveContentionUp(event.keyCode == upKeyCode);
         return false;
     }
