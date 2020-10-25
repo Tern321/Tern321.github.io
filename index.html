@@ -17,7 +17,7 @@
     <div id="topics"></div>
     <div class="menuStyle" style="margin: 0px;">
         <div class="uiButtons">
-            <textarea id="argumentTextArea" style="width:320px; height:73px;"></textarea>
+            <textarea id="argumentTextArea"  placeholder="Текст новой заметки" style="width:320px; height:73px;"></textarea>
             <div>
                 <div>
                     <div>
@@ -25,8 +25,8 @@
                         <button style="background-color:#7bfc03;" onclick="Controller.changeContentionColor('#7bfc03')"> Text</button>
                         <button style="background-color:#f8fc03;" onclick="Controller.changeContentionColor('#f8fc03')"> Text</button>
                         <button style="background-color:#03fcbe;" onclick="Controller.changeContentionColor('#03fcbe')"> Text</button>
-                        <button class="UIBbutton" onclick="Controller.addContention()">Добавить</button>
-                        <button class="UIBbutton" onclick="Controller.changeContention()">Изменить</button>
+                        <button class="UIBbutton" onclick="Controller.addContention()" id='addButton'>Добавить</button>
+                        <button class="UIBbutton" onclick="Controller.changeContention()" id='changeButton'>Изменить</button>
                         <button class="UIBbutton" onclick="Controller.createTopicFromContention()" style="background-color: #e6e6e6;">сделать топиком</button>
                         <button class="UIBbutton" onclick="">перенести(shift+click)</button>
                         <button class="UIBbutton" onclick="Controller.import()">import</button>

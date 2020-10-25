@@ -4,8 +4,8 @@ class Controller {
         this.selectContentionById(e.getAttribute("id"));
     }
     static selectContentionById(contentionId) {
-        console.log(Model.contentionForId(contentionId));
-        console.log(Model.contentionForId(contentionId).childs());
+        //console.log(Model.contentionForId(contentionId));
+        //console.log(Model.contentionForId(contentionId).childs());
         UIDrawer.deselectElement(document.getElementById(this.selectedContentionId));
         UIDrawer.selectElement(document.getElementById(contentionId));
         this.selectedContentionId = contentionId;
@@ -19,18 +19,18 @@ class Controller {
         if (Model.contentionForId(targetContentionId).parentContentionId == Controller.selectedContentionId) {
             //console.log("moveContentionToTop");
             Model.moveContentionToTop(Model.contentionForId(targetContentionId));
-            console.log("moveContention");
+            //console.log("moveContention");
             var archiveContentionId = Model.archiveIdForContention(Controller.selectedContentionId);
             if (Model.contentionsMap.has(archiveContentionId)) {
                 Model.moveContentionToTop(Model.contentionForId(archiveContentionId));
-                console.log("parent contains archive");
+                //console.log("parent contains archive");
             }
         }
         else {
             // �������� ��� �� �� ���������� ������� � ������
             while (testParents && testParents.parentContentionId != "-1") {
                 if (testParents.id == targetContentionId) {
-                    console.log("error contention move");
+                    //console.log("error contention move");
                     return;
                 }
                 testParents = testParents.parentContention();
