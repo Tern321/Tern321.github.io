@@ -38,6 +38,9 @@ function keyUp(event) {
     //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
 }
 function checkKeycode(event) {
+    //if (document.getElementById("argumentTextArea").hasFocus()) {
+    //}
+    //;
     //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
     //if ((event.shiftKey) && (event.keyCode == 1071)) {
     //    moveContention();
@@ -55,7 +58,11 @@ function checkKeycode(event) {
             }
         }
         else {
-            document.getElementById("argumentTextArea").focus();
+            var textArea = document.getElementById("argumentTextArea");
+            if (textArea.matches(":focus")) {
+                return true;
+            }
+            textArea.focus();
             return false;
         }
     }
