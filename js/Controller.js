@@ -434,7 +434,7 @@ window.onload = () => {
     Controller.setTextAreaValue("loginTextArea", localStorage.getItem("login"));
     Controller.setTextAreaValue("encriptionKeyTextArea", localStorage.getItem("encriptionKey"));
     enableInput();
-    backendlessInit();
+    //backendlessInit();
     Controller.reload();
     //CryptoWarper.encrypt("testPasd1", "jsonString1");
     //CryptoWarper.encrypt("test123", "jsonString2");
