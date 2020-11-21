@@ -197,6 +197,17 @@ class Controller {
             }
         }
     }
+    static readFile(file) {
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        //var reader = new FileReader();
+        //reader.onload = function (e) {
+        //    var contents = e.target.result;
+        //    fileInput.func(contents)
+        //    document.body.removeChild(fileInput)
+        //}
+        //reader.readAsText(file)
+    }
     static dragover_handler(ev) {
         console.log(ev);
         ev.preventDefault();
@@ -300,9 +311,8 @@ class Controller {
             Model.rootContention().recursiveAddChilds(list);
             var json = JSON.stringify(list);
             //console.log(json);
-            var url = "";
-            //var url = "https://localhost:44380/Home/saveUdatedData" 
-            Network.saveJson(url, json, hash.toString(), this.getEncriptionKey());
+            //var url = "";
+            Network.saveJson(this.uploadDataurl, json, hash.toString(), this.getEncriptionKey());
             // sand request on server
         }
     }
@@ -317,9 +327,9 @@ class Controller {
             //console.log("login hash " + hash)
             localStorage.setItem("login", login);
             localStorage.setItem("encriptionKey", encriptionKey);
-            //var url = "https://localhost:44380/Home/json"
-            var url = "https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/" + hash + ".json";
-            Network.loadJson(url);
+            //var url = "https://www.sbitravel.com/rest/messages/read_message?login=bmsaowvasgpubyclhhdggydepxm&password=mmvvfcvbjyrtyptyutryuqslxtfnyocchhfdllkhml&appKey=forum&messageKey=data.json"
+            //var url = "https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/" + hash + ".json";
+            Network.loadJson(this.loadJsonUrl);
         }
         else {
             console.log("load default data");
@@ -407,6 +417,8 @@ Controller.topicId = "root";
 Controller.currentVersion = 11;
 Controller.changeSelectedContention = false;
 Controller.shouldSaveContentionOrder = true;
+Controller.uploadDataurl = "http://localhost:51302/Home/saveUdatedData";
+Controller.loadJsonUrl = "http://localhost:51302/Home/json";
 function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -417,14 +429,16 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 window.onload = () => {
-    //console.log("on load " + localStorage.getItem("login"));
+    console.log("on load " + localStorage.getItem("login"));
     Controller.topicId = localStorage.getItem("topic");
     Controller.setTextAreaValue("loginTextArea", localStorage.getItem("login"));
     Controller.setTextAreaValue("encriptionKeyTextArea", localStorage.getItem("encriptionKey"));
     enableInput();
     backendlessInit();
     Controller.reload();
-    //TestUploadFile();
+    //CryptoWarper.encrypt("testPasd1", "jsonString1");
+    //CryptoWarper.encrypt("test123", "jsonString2");
+    //CryptoWarper.encrypt("t3", "jsonStringas 1238917230 9871290 371920837019283790182 73901273 908127390 8709238 712093 71 029837 912873 09");
     // https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/data.txt
 };
 //# sourceMappingURL=Controller.js.map

@@ -17,10 +17,10 @@ class Network {
                 //console.log(data);
                 //console.log("json data " + JSON.stringify(data));
                 //data.json = json;
-                if (true) {
+                if (false) {
                     //console.log("loginHash " + loginHash);
                     //console.log(JSON.stringify(data));
-                    backendlessUploadFile(loginHash + ".json", JSON.stringify(data));
+                    //backendlessUploadFile(loginHash + ".json", JSON.stringify(data));
                 }
                 else {
                     fetch(url, {
