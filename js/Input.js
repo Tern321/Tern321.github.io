@@ -38,13 +38,7 @@ function keyUp(event) {
     //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
 }
 function checkKeycode(event) {
-    //if (document.getElementById("argumentTextArea").hasFocus()) {
-    //}
-    //;
     //console.log("ctrlKey:" + event.ctrlKey + " shiftKey:" + event.shiftKey + " altKey:" + event.altKey + " keyCode:" + event.keyCode);
-    //if ((event.shiftKey) && (event.keyCode == 1071)) {
-    //    moveContention();
-    //}
     if ((event.keyCode == 0xA) || (event.keyCode == 0xD)) {
         if (event.shiftKey) {
             Controller.addContentionList();
@@ -80,11 +74,24 @@ function checkKeycode(event) {
         Controller.moveContentionUp(event.keyCode == upKeyCode);
         return false;
     }
-    //// handling Internet Explorer stupidity with window.event
-    //// @see http://stackoverflow.com/a/3985882/517705
-    //var keyDownEvent = event || window.event,
-    //    keycode = (keyDownEvent.which) ? keyDownEvent.which : keyDownEvent.keyCode;
-    //print_arrow_key(keycode);
+    var textArea = document.getElementById("argumentTextArea");
+    if (!textArea.matches(":focus") && event.ctrlKey) {
+        if (event.keyCode == 67) {
+            //console.log("ctrl c");
+            Controller.copyContentionCtrlC();
+            return true;
+        }
+        if (event.keyCode == 88) {
+            //console.log("ctrl x");
+            Controller.deleteContentionCtrlX();
+            return true;
+        }
+        if (event.keyCode == 86) {
+            //console.log("ctrl v");
+            Controller.addContentionCtrlV();
+            return true;
+        }
+    }
     return true;
 }
 var start;

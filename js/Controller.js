@@ -146,6 +146,25 @@ class Controller {
         Controller.saveUpdatedData();
         UIDrawer.drawUI(false);
     }
+    static copyContentionCtrlC() {
+        var textArea = document.getElementById("argumentTextArea");
+        textArea.focus();
+        textArea.value = Controller.selectedcontention().text;
+        textArea.select();
+        setTimeout(function () { Controller.removeTextAreaFocus(); }, 100);
+    }
+    static deleteContentionCtrlX() {
+    }
+    static removeTextAreaFocus() {
+        var textArea = document.getElementById("argumentTextArea");
+        textArea.blur();
+    }
+    static addContentionCtrlV() {
+        var textArea = document.getElementById("argumentTextArea");
+        textArea.focus();
+        textArea.select();
+        setTimeout(function () { Controller.addContention(); Controller.removeTextAreaFocus(); }, 100);
+    }
     static addContentionList() {
         if (!Controller.selectedContentionId) {
             Controller.selectedContentionId = Controller.topicId;
