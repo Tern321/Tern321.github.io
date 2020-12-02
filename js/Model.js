@@ -37,6 +37,9 @@ class Model {
             objectsList.forEach(function (obj) {
                 var cn = new Contention(obj.id, obj.topic);
                 cn.text = obj.text;
+                cn.url = obj.url;
+                //console.log(cn.url);
+                //console.log(cn.text);
                 cn.parentContentionId = obj.parentContentionId;
                 //cn.childs = obj.childs;
                 cn.color = obj.color;
@@ -123,16 +126,22 @@ class Model {
         Model.updateTopics();
     }
     static addContentionWithId(text, parentId, id) {
+        this.addContentionWithIdUrl(text, undefined, parentId, id);
+    }
+    static addContentionWithIdUrl(text, url, parentId, id) {
         text = text.trim();
         if (text.length > 0) {
             //console.log("addContentionWithId " + id);
             var cn = new Contention(id, false);
             cn.text = text;
             cn.parentContentionId = parentId;
-            //cn.width = 320;
+            cn.url = url;
             Model.contentionsMap.set(cn.id, cn);
             Model.contentionForId(parentId).childs().push(cn.id);
         }
+    }
+    static addLink(text, url, parentId) {
+        this.addContentionWithIdUrl(text, url, parentId, Model.generateRandomId());
     }
     static addContention(text, parentId) {
         this.addContentionWithId(text, parentId, Model.generateRandomId());
