@@ -130,7 +130,7 @@ class Model {
     }
     static addContentionWithIdUrl(text, url, parentId, id) {
         text = text.trim();
-        if (text.length > 0) {
+        if (text.length > 0 || url.length > 0) {
             //console.log("addContentionWithId " + id);
             var cn = new Contention(id, false);
             cn.text = text;
