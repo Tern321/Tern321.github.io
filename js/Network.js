@@ -15,10 +15,10 @@ class Network {
                 data.encriptedData = encriptionData;
                 data.version = Controller.currentVersion;
                 var json = "";
-                var contentType = "application/json";
+                var contentType = "text/plain";
                 if (Controller.localhosted) {
                     json = JSON.stringify(data);
-                    contentType = "text/plain";
+                    contentType = "application/json";
                 }
                 else {
                     var requestData = new PostRequestData();
