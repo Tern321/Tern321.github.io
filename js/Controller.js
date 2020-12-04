@@ -343,7 +343,7 @@ class Controller {
     }
     static loadJsonUrl() {
         //return "/Home/json"
-        return "https://www.sbitravel.com/rest/messages/read_message?login=bmsaosdfdffklanfpjawhepfm" + this.getTextAreaValue("loginTextArea").trim() + "&password=afghknjaophfpeowhfpohawe&appKey=file&messageKey=notepad";
+        return "https://www.sbitravel.com/rest/messages/read_message?login=bmsaosdfdffklanfpjawhepfm" + this.getTextAreaValue("loginTextArea").trim() + "&password=afghknjaophfpeowhfpohawe&appKey=file&messageKey=notepadData";
     }
     static saveUpdatedData() {
         const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);

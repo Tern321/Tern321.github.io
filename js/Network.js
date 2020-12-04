@@ -21,7 +21,7 @@ class Network {
                 else {
                     var requestData = new PostRequestData();
                     requestData.appKey = "file";
-                    requestData.messageKey = "notepad";
+                    requestData.messageKey = "notepadData";
                     requestData.login = "bmsaosdfdffklanfpjawhepfm" + Controller.getTextAreaValue("loginTextArea").trim();
                     requestData.password = "afghknjaophfpeowhfpohawe";
                     requestData.message = JSON.stringify(data);
@@ -32,13 +32,14 @@ class Network {
                     headers: { 'Content-Type': 'application/json' },
                     body: json
                 }).then(function (body) { return body.text(); }).then(function (data) {
-                    if (data == "ok") {
-                        console.log("data saved");
-                    }
-                    else {
-                        alert("страница потеряла актуальность, перезагрузите чтобы вносить изменения");
-                        Controller.currentVersion = -1000;
-                    }
+                    console.log(data);
+                    //if (data == "ok") {
+                    //    console.log("data saved");
+                    //}
+                    //else {
+                    //    alert("страница потеряла актуальность, перезагрузите чтобы вносить изменения");
+                    //    Controller.currentVersion = -1000;
+                    //}
                 });
             });
         });
