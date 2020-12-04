@@ -14,28 +14,32 @@ class Network {
                 var data = new SerializedData();
                 data.encriptedData = encriptionData;
                 data.version = Controller.currentVersion;
-                //console.log(data);
-                //console.log("json data " + JSON.stringify(data));
-                //data.json = json;
+                var json = "";
                 if (false) {
-                    //console.log("loginHash " + loginHash);
-                    //console.log(JSON.stringify(data));
+                    json = JSON.stringify(data);
                 }
                 else {
-                    fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    }).then(function (body) { return body.text(); }).then(function (data) {
-                        if (data == "ok") {
-                            console.log("data saved");
-                        }
-                        else {
-                            alert("страница потеряла актуальность, перезагрузите чтобы вносить изменения");
-                            Controller.currentVersion = -1000;
-                        }
-                    });
+                    var requestData = new PostRequestData();
+                    requestData.appKey = "file";
+                    requestData.messageKey = "notepad";
+                    requestData.login = "bmsaosdfdffklanfpjawhepfm" + Controller.getTextAreaValue("loginTextArea").trim();
+                    requestData.password = "afghknjaophfpeowhfpohawe";
+                    requestData.message = JSON.stringify(data);
+                    json = JSON.stringify(requestData);
                 }
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: json
+                }).then(function (body) { return body.text(); }).then(function (data) {
+                    if (data == "ok") {
+                        console.log("data saved");
+                    }
+                    else {
+                        alert("страница потеряла актуальность, перезагрузите чтобы вносить изменения");
+                        Controller.currentVersion = -1000;
+                    }
+                });
             });
         });
     }
@@ -50,5 +54,7 @@ class Network {
             });
         });
     }
+}
+class PostRequestData {
 }
 //# sourceMappingURL=Network.js.map

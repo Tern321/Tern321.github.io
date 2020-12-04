@@ -337,6 +337,14 @@ class Controller {
     static contentionIsVisible(contentionId) {
         return document.getElementById(contentionId) != undefined;
     }
+    static uploadDataUrl() {
+        //return "/Home/saveUdatedData"
+        return "https://www.sbitravel.com/rest/messages/send_message_post";
+    }
+    static loadJsonUrl() {
+        //return "/Home/json"
+        return "https://www.sbitravel.com/rest/messages/read_message?login=bmsaosdfdffklanfpjawhepfm" + this.getTextAreaValue("loginTextArea").trim() + "&password=afghknjaophfpeowhfpohawe&appKey=file&messageKey=notepad";
+    }
     static saveUpdatedData() {
         const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
         var login = this.getTextAreaValue("loginTextArea").trim();
@@ -349,7 +357,7 @@ class Controller {
             var json = JSON.stringify(list);
             //console.log(json);
             //var url = "";
-            Network.saveJson(Controller.uploadDataurl, json, hash.toString(), Controller.getEncriptionKey());
+            Network.saveJson(Controller.uploadDataUrl(), json, hash.toString(), Controller.getEncriptionKey());
             // sand request on server
         }
     }
@@ -364,7 +372,7 @@ class Controller {
             //console.log("login hash " + hash)
             localStorage.setItem("login", login);
             localStorage.setItem("encriptionKey", encriptionKey);
-            Network.loadJson(this.loadJsonUrl);
+            Network.loadJson(Controller.loadJsonUrl());
         }
         else {
             console.log("load default data");
@@ -453,8 +461,6 @@ Controller.currentVersion = 11;
 Controller.changeSelectedContention = false;
 Controller.shouldSaveContentionOrder = true;
 Controller.showAllEnabled = false;
-Controller.uploadDataurl = "/Home/saveUdatedData";
-Controller.loadJsonUrl = "/Home/json";
 function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
