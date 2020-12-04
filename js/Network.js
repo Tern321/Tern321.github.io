@@ -29,7 +29,7 @@ class Network {
                 }
                 fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain' },
                     body: json
                 }).then(function (body) { return body.text(); }).then(function (data) {
                     console.log(data);
