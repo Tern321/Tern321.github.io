@@ -15,21 +15,23 @@ class Network {
                 data.encriptedData = encriptionData;
                 data.version = Controller.currentVersion;
                 var json = "";
-                if (false) {
+                var contentType = "application/json";
+                if (Controller.localhosted) {
                     json = JSON.stringify(data);
+                    contentType = "text/plain";
                 }
                 else {
                     var requestData = new PostRequestData();
                     requestData.appKey = "file";
                     requestData.messageKey = "notepadData";
-                    requestData.login = "bmsaosdfdffklanfpjawhepfm" + Controller.getTextAreaValue("loginTextArea").trim();
+                    requestData.login = Controller.getTextAreaValue("loginTextArea").trim();
                     requestData.password = "afghknjaophfpeowhfpohawe";
                     requestData.message = JSON.stringify(data);
                     json = JSON.stringify(requestData);
                 }
                 fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': contentType },
                     body: json
                 }).then(function (body) { return body.text(); }).then(function (data) {
                     console.log(data);
@@ -44,16 +46,40 @@ class Network {
             });
         });
     }
-    static loadJson(url) {
+    static updateLastChangeTime(url, time, login) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(url)
-                .then(function (body) { return body.text(); })
-                .then(function (data) { Model.decriptJson(data, Controller.getEncriptionKey()); })
-                .catch(function (body) {
-                console.log("loadJson error");
-                Model.parseJson("");
+            var requestData = new PostRequestData();
+            requestData.appKey = "file";
+            requestData.messageKey = "notepadData";
+            requestData.login = login;
+            requestData.password = "afghknjaophfpeowhfpohawe";
+            requestData.message = time + "";
+            var json = JSON.stringify(requestData);
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: json
+            }).then(function (body) { return body.text(); }).then(function (data) {
+                console.log(data);
             });
         });
+    }
+    static sendRequest(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return fetch(url)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.text();
+            });
+        });
+    }
+    static generateReadUrl(login, appKey, messageKey) {
+        return "https://www.sbitravel.com/rest/messages/read_message?login=" + login + "&password=afghknjaophfpeowhfpohawe&appKey=" + appKey + "&messageKey=" + messageKey;
+    }
+    static generateWriteUrl(login, appKey, messageKey, message) {
+        return "https://www.sbitravel.com/rest/messages/send_message?login=" + login + "&password=afghknjaophfpeowhfpohawe&appKey=" + appKey + "&messageKey=" + messageKey + "&message=" + message;
     }
 }
 class PostRequestData {

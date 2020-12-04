@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class Model {
     static decriptJson(jsonText, password) {
         var data = JSON.parse(jsonText);
@@ -25,6 +34,19 @@ class Model {
             }
         }
     }
+    static updateLastChangeTime(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Network.sendRequest(url)
+                .then(responseString => {
+                Controller.lastChangeTime = responseString;
+                console.log("got last update time from server " + Controller.lastChangeTime);
+            })
+                .catch(function (body) {
+                Controller.lastChangeTime = "-1";
+                console.log("get last update time from server error");
+            });
+        });
+    }
     static parseJson(jsonText) {
         //console.log("parseJson " + jsonText);
         Model.contentionsMap = new Map();
@@ -38,8 +60,6 @@ class Model {
                 var cn = new Contention(obj.id, obj.topic);
                 cn.text = obj.text;
                 cn.url = obj.url;
-                //console.log(cn.url);
-                //console.log(cn.text);
                 cn.parentContentionId = obj.parentContentionId;
                 //cn.childs = obj.childs;
                 cn.color = obj.color;
@@ -57,6 +77,7 @@ class Model {
                     parentContentionChildsList.push(cn.id);
                 }
             });
+            Model.updateLastChangeTime(Controller.getJsonUpdateTimeUrl());
         }
         catch (e) {
             console.log("parce error " + e);

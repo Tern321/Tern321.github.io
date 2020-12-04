@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class Controller {
     // selection
     static selectContention(e) {
@@ -35,7 +44,7 @@ class Controller {
             }
             Model.moveContention(targetContentionId, Controller.selectedcontention().id);
         }
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static moveContentionSelection(keyCode) {
@@ -128,7 +137,7 @@ class Controller {
     static saveContentionOrder() {
         if (this.shouldSaveContentionOrder) {
             this.shouldSaveContentionOrder = false;
-            Controller.saveUpdatedData();
+            Controller.checkChangeTimeAndSaveUpdatedData();
             UIDrawer.drawUI();
         }
     }
@@ -151,7 +160,7 @@ class Controller {
         Model.addContention(textArea.value.split("\n").join("<br>"), Controller.selectedContentionId);
         textArea.value = "";
         textArea.focus();
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static copyContentionCtrlC() {
@@ -189,7 +198,7 @@ class Controller {
         });
         textArea.value = "";
         textArea.focus();
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static addLink() {
@@ -204,7 +213,7 @@ class Controller {
         Model.addLink(text, lines[0], Controller.selectedContentionId);
         textArea.value = "";
         textArea.focus();
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static addFile(ev) {
@@ -258,7 +267,7 @@ class Controller {
         }
         selectedcontention.updateText(text);
         textArea.value = "";
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static copyContentionText() {
@@ -269,25 +278,25 @@ class Controller {
     static changeContentionColor(color) {
         var selectedcontention = Controller.selectedcontention();
         selectedcontention.color = color;
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static deleteContention() {
         //console.log("removeContention " + Controller.selectedContentionId);
         Model.removeContention(Controller.selectedContentionId);
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static collapceContention(contentionId) {
         var cn = Model.contentionsMap.get(contentionId);
         cn.collapce = !cn.collapce;
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static collapceSelectedContention() {
         var cn = Controller.selectedcontention();
         cn.collapce = !cn.collapce;
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     static addSelectedToArchive() {
@@ -297,7 +306,7 @@ class Controller {
         var cn = Model.contentionsMap.get(contentionId);
         var archiveContention = Model.archiveForContention(cn.parentContention());
         Model.moveContention(cn.id, archiveContention.id);
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         UIDrawer.drawUI();
     }
     // topic
@@ -307,7 +316,7 @@ class Controller {
         selectedcontention.topic = !selectedcontention.topic;
         Model.childTopicsMap.set(selectedcontention.id, []);
         Model.updateTopics();
-        Controller.saveUpdatedData();
+        Controller.checkChangeTimeAndSaveUpdatedData();
         if (selectedcontention.topic) {
             //Controller.topicId = selectedcontention.id;
         }
@@ -338,12 +347,28 @@ class Controller {
         return document.getElementById(contentionId) != undefined;
     }
     static uploadDataUrl() {
-        //return "/Home/saveUdatedData"
+        if (Controller.localhosted) {
+            return "/Home/saveUdatedData";
+        }
         return "https://www.sbitravel.com/rest/messages/send_message_post";
     }
     static loadJsonUrl() {
-        //return "/Home/json"
-        return "https://www.sbitravel.com/rest/messages/read_message?login=bmsaosdfdffklanfpjawhepfm" + this.getTextAreaValue("loginTextArea").trim() + "&password=afghknjaophfpeowhfpohawe&appKey=file&messageKey=notepadData";
+        if (Controller.localhosted) {
+            return "/Home/json";
+        }
+        return Network.generateReadUrl(this.getTextAreaValue("loginTextArea").trim(), "file", "notepadData");
+    }
+    static getJsonUpdateTimeUrl() {
+        if (Controller.localhosted) {
+            return "/Home/lastChangeTime";
+        }
+        return Network.generateReadUrl(this.getTextAreaValue("loginTextArea").trim(), "file", "notepadDataUpdateTime");
+    }
+    static setJsonUpdateTimeUrl(time) {
+        if (Controller.localhosted) {
+            return "/Home/setLastChangeTime/" + time;
+        }
+        return Network.generateWriteUrl(Controller.getTextAreaValue("loginTextArea").trim(), "file", "notepadDataUpdateTime", Controller.lastChangeTime);
     }
     static saveUpdatedData() {
         const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
@@ -361,6 +386,22 @@ class Controller {
             // sand request on server
         }
     }
+    static checkChangeTimeAndSaveUpdatedData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Network.sendRequest(Controller.getJsonUpdateTimeUrl()).then(lastChangeTime => {
+                if (Controller.lastChangeTime === lastChangeTime) {
+                    Controller.saveUpdatedData();
+                    // update change data with Date.now();
+                    var changeTime = Date.now();
+                    Controller.lastChangeTime = changeTime + "";
+                    Network.sendRequest(Controller.setJsonUpdateTimeUrl(Controller.lastChangeTime));
+                }
+                else {
+                    alert("Reload page to update data");
+                }
+            });
+        });
+    }
     static reload() {
         const hashCode = s => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
         var login = this.getTextAreaValue("loginTextArea").trim();
@@ -372,10 +413,18 @@ class Controller {
             //console.log("login hash " + hash)
             localStorage.setItem("login", login);
             localStorage.setItem("encriptionKey", encriptionKey);
-            Network.loadJson(Controller.loadJsonUrl());
+            //Network.loadJson();
+            Network.sendRequest(Controller.loadJsonUrl()).then(responseString => {
+                console.log(responseString);
+                Model.decriptJson(responseString, Controller.getEncriptionKey());
+            }).catch(function (body) {
+                console.log("loadJson error");
+                Model.parseJson("");
+            });
         }
         else {
             console.log("load default data");
+            Model.parseJson("");
             //console.log(login)
             //console.log(encriptionKey)
             //var hash = Math.abs(hashCode(login));
@@ -384,7 +433,7 @@ class Controller {
             //localStorage.setItem("encriptionKey", encriptionKey);
             //var url = "https://localhost:44380/Home/json"
             //var url = "https://backendlessappcontent.com/4498E4FA-01A9-8E7F-FFC3-073969464300/B416CA2D-2783-4942-A3ED-B132738BE078/files/DataFolder/1544803905.json";
-            Network.loadJson("instruction url");
+            //Network.loadJson("instruction url");
         }
     }
     static import() {
@@ -461,6 +510,8 @@ Controller.currentVersion = 11;
 Controller.changeSelectedContention = false;
 Controller.shouldSaveContentionOrder = true;
 Controller.showAllEnabled = false;
+Controller.lastChangeTime = "0";
+Controller.localhosted = false;
 function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -471,6 +522,8 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 window.onload = () => {
+    var url = Controller.getJsonUpdateTimeUrl();
+    //Network.sendRequest(url).then(responseString => { console.log(responseString); });
     Controller.topicId = localStorage.getItem("topic");
     Controller.setTextAreaValue("loginTextArea", localStorage.getItem("login"));
     Controller.setTextAreaValue("encriptionKeyTextArea", localStorage.getItem("encriptionKey"));
