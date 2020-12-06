@@ -388,28 +388,18 @@ class Controller {
     }
     static checkChangeTimeAndSaveUpdatedData() {
         return __awaiter(this, void 0, void 0, function* () {
-            function runSerialTaskAsync() {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield Controller.lock.acquireAsync();
-                    try {
-                        Network.sendRequest(Controller.getJsonUpdateTimeUrl()).then(lastChangeTime => {
-                            if (Controller.lastChangeTime === lastChangeTime) {
-                                Controller.saveUpdatedData();
-                                // update change data with Date.now();
-                                var changeTime = Date.now();
-                                Controller.lastChangeTime = changeTime + "";
-                                Network.sendRequest(Controller.setJsonUpdateTimeUrl(Controller.lastChangeTime));
-                            }
-                            else {
-                                alert("Reload page to update data");
-                            }
-                        });
-                    }
-                    finally {
-                        Controller.lock.release();
-                    }
-                });
-            }
+            Network.sendRequest(Controller.getJsonUpdateTimeUrl()).then(lastChangeTime => {
+                if (Controller.lastChangeTime === lastChangeTime) {
+                    Controller.saveUpdatedData();
+                    // update change data with Date.now();
+                    var changeTime = Date.now();
+                    Controller.lastChangeTime = changeTime + "";
+                    Network.sendRequest(Controller.setJsonUpdateTimeUrl(Controller.lastChangeTime));
+                }
+                else {
+                    alert("Reload page to update data");
+                }
+            });
         });
     }
     static reload() {
@@ -522,7 +512,6 @@ Controller.shouldSaveContentionOrder = true;
 Controller.showAllEnabled = false;
 Controller.lastChangeTime = "0";
 Controller.localhosted = false;
-Controller.lock = new AwaitLock();
 function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
