@@ -8,62 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 class Network {
-    static saveJson(url, json, loginHash, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            CryptoWarper.encrypt(password, json).then(function (encriptionData) {
-                var data = new SerializedData();
-                data.encriptedData = encriptionData;
-                data.version = Controller.currentVersion;
-                var json = "";
-                var contentType = "text/plain";
-                if (Controller.localhosted) {
-                    json = JSON.stringify(data);
-                    contentType = "application/json";
-                }
-                else {
-                    var requestData = new PostRequestData();
-                    requestData.appKey = "file";
-                    requestData.messageKey = "notepadData";
-                    requestData.login = Controller.getTextAreaValue("loginTextArea").trim();
-                    requestData.password = "afghknjaophfpeowhfpohawe";
-                    requestData.message = JSON.stringify(data);
-                    json = JSON.stringify(requestData);
-                }
-                fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': contentType },
-                    body: json
-                }).then(function (body) { return body.text(); }).then(function (data) {
-                    console.log(data);
-                    //if (data == "ok") {
-                    //    console.log("data saved");
-                    //}
-                    //else {
-                    //    alert("страница потеряла актуальность, перезагрузите чтобы вносить изменения");
-                    //    Controller.currentVersion = -1000;
-                    //}
-                });
-            });
-        });
-    }
-    static updateLastChangeTime(url, time, login) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var requestData = new PostRequestData();
-            requestData.appKey = "file";
-            requestData.messageKey = "notepadData";
-            requestData.login = login;
-            requestData.password = "afghknjaophfpeowhfpohawe";
-            requestData.message = time + "";
-            var json = JSON.stringify(requestData);
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: json
-            }).then(function (body) { return body.text(); }).then(function (data) {
-                console.log(data);
-            });
-        });
-    }
     static sendRequest(url) {
         return __awaiter(this, void 0, void 0, function* () {
             return fetch(url)
@@ -81,7 +25,32 @@ class Network {
     static generateWriteUrl(login, appKey, messageKey, message) {
         return "https://www.sbitravel.com/rest/messages/send_message?login=" + login + "&password=afghknjaophfpeowhfpohawe&appKey=" + appKey + "&messageKey=" + messageKey + "&message=" + message;
     }
+    static uploadDataUrl() {
+        if (Network.localhosted) {
+            return "/Home/saveUdatedData";
+        }
+        return "https://www.sbitravel.com/rest/messages/send_message_post";
+    }
+    static loadJsonUrl(login) {
+        if (Network.localhosted) {
+            return "/Home/json";
+        }
+        return Network.generateReadUrl(login, "file", "notepadData");
+    }
+    static getJsonUpdateTimeUrl(login) {
+        if (Network.localhosted) {
+            return "/Home/lastChangeTime";
+        }
+        return Network.generateReadUrl(login, "file", "notepadDataUpdateTime");
+    }
+    static setJsonUpdateTimeUrl(time, login) {
+        if (Network.localhosted) {
+            return "/Home/setLastChangeTime/" + time;
+        }
+        return Network.generateWriteUrl(login, "file", "notepadDataUpdateTime", UpdateDataRequestController.lastChangeTime);
+    }
 }
+Network.localhosted = false;
 class PostRequestData {
 }
 //# sourceMappingURL=Network.js.map
