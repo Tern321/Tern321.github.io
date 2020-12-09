@@ -94,9 +94,14 @@ class Controller {
             Model.contentionsMap.set(cn.id, cn);
         }
     }
+    static argumentTextArea() {
+        return document.getElementById("argumentTextArea");
+    }
+    static cleanTextArea() {
+        Controller.argumentTextArea().text = "";
+    }
     static removeTextAreaFocus() {
-        var textArea = document.getElementById("argumentTextArea");
-        textArea.blur();
+        Controller.argumentTextArea().blur();
     }
     static addFile(ev) {
         if (!Controller.selectedContentionId) {
@@ -139,11 +144,36 @@ class Controller {
         console.log(ev);
         ev.preventDefault();
     }
+    static textAreasHasFocus() {
+        if (Controller.argumentTextArea().matches(":focus")) {
+            return true;
+        }
+        if (document.getElementById("loginTextArea").matches(":focus")) {
+            return true;
+        }
+        if (document.getElementById("encriptionKeyTextArea").matches(":focus")) {
+            return true;
+        }
+        return false;
+    }
+    static setContentionBorderType(id, dashed) {
+        var element = document.getElementById(id);
+        if (element != undefined) {
+            UIDrawer.setElementBorderType(element, dashed);
+        }
+    }
+    static cleanCutContentionList() {
+        Controller.cutContentionList.forEach(function (contentionId) {
+            Controller.setContentionBorderType(contentionId, false);
+        });
+        Controller.cutContentionList = [];
+    }
 }
 Controller.topicId = "root";
 Controller.changeSelectedContention = false;
 Controller.shouldSaveContentionOrder = true;
 Controller.showAllEnabled = false;
+Controller.cutContentionList = [];
 function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));

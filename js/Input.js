@@ -74,8 +74,7 @@ function checkKeycode(event) {
         ActionsController.moveContentionUp(event.keyCode == upKeyCode);
         return false;
     }
-    var textArea = document.getElementById("argumentTextArea");
-    if (!textArea.matches(":focus") && event.ctrlKey) {
+    if (!Controller.textAreasHasFocus() && event.ctrlKey) {
         if (event.keyCode == 67) {
             //console.log("ctrl c");
             ActionsController.copyContentionCtrlC();
@@ -83,7 +82,7 @@ function checkKeycode(event) {
         }
         if (event.keyCode == 88) {
             //console.log("ctrl x");
-            ActionsController.deleteContentionCtrlX();
+            ActionsController.cutContentionCtrlX();
             return true;
         }
         if (event.keyCode == 86) {
