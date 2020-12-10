@@ -40,7 +40,7 @@
     color: black;
     border: 1px solid #555555;
     text-align: left;
-    position: fixed;
+    position: absolute;
 }
 
 .verticalCenter {
@@ -54,7 +54,7 @@
     transform: translateY(-50%);
     line-height: 0.9em;
     /*border: 1px;*/
-    solid #000000;
+    solid: #000000;
     display: inline-block;
 }
 
@@ -84,7 +84,7 @@
     margin: 0px;
     padding: 0px;
     height: 100%;
-    position: fixed;
+    position: absolute;
     background-color: #EEE;
 }
 

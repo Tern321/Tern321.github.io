@@ -81,7 +81,6 @@ class UIDrawer {
         //
         const element = document.createElement("div");
         element.innerHTML = '<div class="topicsBackground" style = "width:' + UIDrawer.topicsWidth + 'px;" />';
-        UIDrawer.topicIndex++;
         topicsDiv.appendChild(element);
         UIDrawer.topicIndex = 0;
         UIDrawer.drawTopics(Model.contentionsMap.get("root"), 0);
