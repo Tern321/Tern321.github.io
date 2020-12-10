@@ -50,7 +50,7 @@ class Network {
         return Network.generateWriteUrl(login, "file", "notepadDataUpdateTime", UpdateDataRequestController.lastChangeTime);
     }
 }
-Network.localhosted = true;
+Network.localhosted = false;
 class PostRequestData {
 }
 //# sourceMappingURL=Network.js.map
