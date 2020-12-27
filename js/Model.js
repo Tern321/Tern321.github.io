@@ -8,8 +8,6 @@ class Model {
     }
     // logic
     static decriptJson(jsonText, password) {
-        Network.log("decriptJson");
-        Network.log(jsonText);
         var data = JSON.parse(jsonText);
         //console.log(data.version);
         //console.log(data.json);
@@ -24,7 +22,7 @@ class Model {
                     //console.log("decripted json ");
                     Model.parseJson(json);
                 }).catch(function (error) {
-                    Network.log(error);
+                    console.log(error);
                 });
             }
             else {
@@ -68,7 +66,7 @@ class Model {
             UpdateDataRequestController.getLastChangeTime(Network.getJsonUpdateTimeUrl(Controller.getTextAreaValue("loginTextArea").trim()));
         }
         catch (e) {
-            Network.log("parce error " + e);
+            console.log("parce error " + e);
         }
         // add root element if there is no one
         if (!Model.contentionsMap.has("root")) {

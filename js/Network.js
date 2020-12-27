@@ -8,41 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 class Network {
-    static log(str) {
-        console.log(str);
-        alert(str);
-        //Network.logData += "\n" + str;
-        //Network.saveLog(Network.logData, login);
-    }
-    static saveLog(str, login) {
-        return __awaiter(this, void 0, void 0, function* () {
-            //console.log("setLastChangeTime");
-            var url = Network.generateWriteUrl(login, "notepad", "notepadLog", UpdateDataRequestController.lastChangeTime);
-            var requestData = new PostRequestData();
-            requestData.appKey = "notepad";
-            requestData.messageKey = "notepadLog";
-            requestData.login = login;
-            requestData.password = "afghknjaophfpeowhfpohawe";
-            requestData.message = str;
-            var json = JSON.stringify(requestData);
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: json
-            }).then(function (body) { return body.text(); }).then(function (data) {
-                console.log(data);
-            }).catch(function (body) {
-                UpdateDataRequestController.updateDataRequestLock = false;
-                console.log("setLastChangeTime request error");
-            });
-        });
-    }
     static localhosted() {
         return (location.hostname === "localhost" || location.hostname === "127.0.0.1");
     }
     static sendRequest(url) {
         return __awaiter(this, void 0, void 0, function* () {
-            Network.log(url);
             return fetch(url)
                 .then(response => {
                 if (!response.ok) {
@@ -83,7 +53,6 @@ class Network {
         return Network.generateWriteUrl(login, "file", "notepadDataUpdateTime", UpdateDataRequestController.lastChangeTime);
     }
 }
-Network.logData = "";
 class PostRequestData {
 }
 //# sourceMappingURL=Network.js.map
