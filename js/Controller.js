@@ -139,7 +139,7 @@ class Controller {
             Network.sendRequest(Network.loadJsonUrl(login)).then(responseString => {
                 Model.decriptJson(responseString, Controller.getEncriptionKey());
             }).catch(function (body) {
-                console.log("loadJson error");
+                Network.log("loadJson error");
                 Model.parseJson("");
             });
         }
@@ -169,7 +169,9 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 window.onload = () => {
-    var url = Network.getJsonUpdateTimeUrl(Controller.getTextAreaValue("loginTextArea").trim());
+    //CacheManager.init();
+    //var url = Network.getJsonUpdateTimeUrl(Controller.getTextAreaValue("loginTextArea").trim());
+    Network.log("onload");
     //Network.sendRequest(url).then(responseString => { console.log(responseString); });
     Controller.topicId = localStorage.getItem("topic");
     Controller.setTextAreaValue("loginTextArea", localStorage.getItem("login"));
