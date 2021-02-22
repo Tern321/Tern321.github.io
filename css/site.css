@@ -1,7 +1,7 @@
 ﻿
 /*menuitem*/
 .menuStyle {
-    position: absolute; /* Фиксированное положение */
+    position: fixed; /* Фиксированное положение */
     left: 220px;
     top: 0; /* Левый нижний угол */
     background-color: #FFF;
@@ -9,27 +9,15 @@
     /*vertical-align: middle;*/
     display: flex;
     /*max-height:32px;*/
+
 }
 
-.LoginTextArea {
-    width: 20px;
-    height: 26px;
-    background-color: #FFF;
-    margin: 0px;
-    padding: 0px;
-    border: 1px solid black;
-}
-.UIColorButton {
-    height: 28px;
-    width: 40px;
-    margin: 0px;
-    padding: 0px;
-    border: 1px solid black;
+.uiButtons {
+    
 }
 
-.UIButton {
+.UIBbutton {
     width: 80px;
-    height: 28px;
     background-color: #FFF;
     margin: 0px;
     padding: 0px;
